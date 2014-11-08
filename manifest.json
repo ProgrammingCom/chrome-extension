@@ -8,6 +8,6 @@
         	"38": "img/icon_38x38.png"
     	},
         "default_title": "Programming.com click for settings",
-        "default_popup": "html/settings.html"
+        "default_popup": "html/login.html"
     }
 }
