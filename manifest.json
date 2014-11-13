@@ -1,5 +1,5 @@
 {
-    "name": "Programming.com Extention",
+    "name": "Programming.com Extension",
     "version": "0.0.1",
     "manifest_version": 2,
     "browser_action": {

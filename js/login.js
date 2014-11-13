@@ -1,10 +1,14 @@
 "use strict";
 
-if (isLogedIn()) {
-	refresh();
-}
+$(document).load(function() { 
+	$("#spinner").fadeIn(); 
+}).ready(function(){
+	if (isLogedIn()) {
+		refresh();
+	}
+	
+	$("#spinner").fadeOut("slow"); 
 
-$(document).ready(function(){
 	$("#login").click(function () {
 		var username = $("#username").val().trim().toLowerCase();
 		var password = $("#password").val().trim().toLowerCase();
@@ -12,6 +16,8 @@ $(document).ready(function(){
 		login(username, password);
 	});
 });
+
+
 
 function login(username, password) {
 	if(typeof(Storage) === "undefined") {
