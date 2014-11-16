@@ -9,5 +9,30 @@
     	},
         "default_title": "Programming.com click for settings",
         "default_popup": "html/login.html"
-    }
+    },
+    "web_accessible_resources": ["lib/jquery/dist/jquery.min.js"],
+    "content_scripts": [
+        {
+            "matches": ["*://github.com/*"],
+            "js": [
+                "lib/jquery/dist/jquery.min.js", 
+                "js/github.js"
+            ],
+            "run_at": "document_end"
+        },
+        {
+            "matches": ["*://stackoverflow.com/*"],
+            "js": [
+                "lib/jquery/dist/jquery.min.js", 
+                "js/stackoverflow.js"
+            ],
+            "run_at": "document_end"
+        }
+    ],
+
+    "permissions": [
+        "tabs", 
+        "https://*/*", 
+        "http://*/*"
+    ]
 }

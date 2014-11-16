@@ -6,7 +6,7 @@ $(document).load(function() {
 	if (isLogedIn()) {
 		refresh();
 	}
-	
+
 	$("#spinner").fadeOut("slow"); 
 
 	$("#login").click(function () {
@@ -16,7 +16,6 @@ $(document).load(function() {
 		login(username, password);
 	});
 });
-
 
 
 function login(username, password) {
