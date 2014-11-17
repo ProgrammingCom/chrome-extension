@@ -40,7 +40,7 @@ function login(username, password) {
 		success: function (resp) {
 			localStorage.setItem("access_token", resp.access_token);
 			localStorage.setItem("refresh_token", resp.refresh_token);
-			$(location).attr('href', "../html/settings.html");
+			$(location).attr('href', "../html/main.html");
 		},
 		error: function (req, status, err) {
 			console.log( 'something went wrong', status, err );
@@ -65,7 +65,7 @@ function refresh() {
 		alert("Missing re-login information!");
 		return;
 	}
-	console.log("here!");
+
 	$.ajax({
 		url: "http://teanab.com/api/1/oauth2/token",
 		type: "POST",
@@ -77,7 +77,7 @@ function refresh() {
 		},
 		success: function (resp) {
 			localStorage.setItem("access_token", resp.access_token);
-			$(location).attr('href', "../html/settings.html");
+			$(location).attr('href', "../html/main.html");
 		},
 		error: function (req, status, err) {
 			console.log( 'something went wrong', status, err );
