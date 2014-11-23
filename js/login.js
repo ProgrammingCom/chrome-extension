@@ -1,15 +1,19 @@
 "use strict";
 
-$(document).load(function() { 
-	$("#spinner").fadeIn(); 
-}).ready(function(){
+// Check if defaults are loaded
+if (!baseUrl) {
+	die('something went wrong');
+};
+
+$(document).ready(function() {
 	if (isLogedIn()) {
 		refresh();
 	}
-
-	$("#spinner").fadeOut("slow"); 
+	$("#alertBox").hide();
+	$("#spinner").fadeOut("slow");
 
 	$("#login").click(function () {
+		$("#alertBox").hide();
 		var username = $("#username").val().trim().toLowerCase();
 		var password = $("#password").val().trim().toLowerCase();
 
@@ -17,19 +21,19 @@ $(document).load(function() {
 	});
 });
 
-
 function login(username, password) {
 	if(typeof(Storage) === "undefined") {
-		alert("Unsupported browser!");
-		return;
+		goTo("error", {status:"Unsupported browser!", err:null});
 	}
 
 	if (!username || !password) {
-		alert("Missing login information!");
+		$("#alertBox").html("Missing login information!");
+		$("#alertBox").fadeIn("slow");
+		return;
 	}
 
 	$.ajax({
-		url: "http://teanab.com/api/1/oauth2/token",
+		url: baseUrl + "oauth2/token",
 		type: "POST",
 		data: {
 			client_id: "phoneapp",
@@ -37,14 +41,21 @@ function login(username, password) {
 			username: username,
 			password: password
 		},
-		success: function (resp) {
+		success: function(resp) {
+			if (resp.code === 400) {
+				$("#alertBox").html("Invalid username or password");
+				$("#alertBox").fadeIn("slow");
+				return;
+			};
+
 			localStorage.setItem("access_token", resp.access_token);
 			localStorage.setItem("refresh_token", resp.refresh_token);
-			$(location).attr('href', "../html/main.html");
+			goTo("main");
 		},
 		error: function (req, status, err) {
-			console.log( 'something went wrong', status, err );
-			$(location).attr('href', "../html/error.html");
+			$("#alertBox").html(status);
+			$("#alertBox").fadeIn("slow");
+			console.log('something went wrong', status, err );
 		}
 	});
 };
@@ -67,7 +78,7 @@ function refresh() {
 	}
 
 	$.ajax({
-		url: "http://teanab.com/api/1/oauth2/token",
+		url: baseUrl + "oauth2/token",
 		type: "POST",
 		data: {
 			client_id: "phoneapp",
@@ -77,11 +88,13 @@ function refresh() {
 		},
 		success: function (resp) {
 			localStorage.setItem("access_token", resp.access_token);
-			$(location).attr('href', "../html/main.html");
+			goTo("main");
+			// $(location).attr('href', "../html/main.html");
 		},
 		error: function (req, status, err) {
 			console.log( 'something went wrong', status, err );
-			$(location).attr('href', "../html/error.html");
+			goTo("error", {status:status, err:err});
+			// $(location).attr('href', "../html/error.html");
 		}
 	});
 };

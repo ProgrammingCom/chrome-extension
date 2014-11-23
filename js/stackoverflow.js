@@ -1,18 +1,29 @@
 "use strict";
+// Check if defaults are loaded
+if (!baseUrl) {
+	die('something went wrong');
+};
+
 var container = '.module.sidebar-related';
 $(document).ready(function() {
-	
+
 	var el = $(container);
 	if (!el) {
 		return;
 	}
 
 	$.ajax({
-		url: "http://teanab.com/api/1/posts",
+		url: baseUrl + "posts",
 		type: "GET",
 		data: {
 		},
 		success: function (resp) {
+			console.log(resp);
+			if (resp.code === 400) {
+				console.log(resp);
+				return;
+			};
+
 			var content = "<div class='module sidebar-related'><h4>Related Tutorials</h4>";
 
 			for (var i = resp.items.length - 1; i >= 0; i--) {
